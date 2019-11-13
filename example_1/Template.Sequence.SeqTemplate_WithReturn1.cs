@@ -21,8 +21,6 @@ namespace example_1
 
         int cycle_;
         int cycleCompleted_;
-
-        string return_;
         #endregion
 
         #region Constructor
@@ -64,7 +62,7 @@ namespace example_1
         /// </summary>
         protected override void beforeSequence()
         {
-            //Preparation/clean up code here...
+            cycleCompleted_ = 0;
         }
 
         /// <summary>
@@ -109,7 +107,7 @@ namespace example_1
                         }
                     }
 
-                    return_ += 1 ;
+                    cycleCompleted_ += 1;
 
                     break;
 
@@ -145,7 +143,7 @@ namespace example_1
         /// <param name="param1">The param1.</param>
         /// <param name="param2">The param2.</param>
         /// <returns></returns>
-        public async Task<string> ExecuteAsync(int cycle)
+        public async Task<int> ExecuteAsync(int cycle)
         {
             try
             {
@@ -259,10 +257,12 @@ namespace example_1
                 afterSequence();
 
                 //Return code here.
-                return return_;
+                return cycleCompleted_;
             }
-            catch
+            catch (Exception ex)
             {
+                LastException = ex;
+                broadcastException(ex);
                 CycleTime = timer.Elapsed.Duration();
                 broadcastLog("Sequence cycle time " + CycleTime.TotalSeconds.ToString() + "s");
                 globalBusyState.IsBusy = false;
