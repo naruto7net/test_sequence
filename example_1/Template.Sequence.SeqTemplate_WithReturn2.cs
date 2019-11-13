@@ -10,18 +10,8 @@ namespace example_1
     public class Template : SequenceNoExecuteMethodAbstract
     {
         #region Fields
-
-        Func<Task> home_;
-        Func<Task> moveToPointA_;
-        Func<Task> moveToPointB_;
-        Func<Task> cylinderUp_;
-        Func<Task> cylinderDown_;
-        Func<Task> suckAirOn_;
-        Func<Task> suckAirOff_;
-
-        int cycle_;
-        int cycleCompleted_;
-
+        string param1_;
+        int param2_;
         string return_;
         #endregion
 
@@ -31,22 +21,8 @@ namespace example_1
         /// Customize your constructor.
         /// </summary>
         /// <param name="name">The name.</param>
-        public Template(string name,
-            Func<Task> home,
-            Func<Task> moveToPointA,
-            Func<Task> moveToPointB,
-            Func<Task> cylinderUp,
-            Func<Task> cylinderDown,
-            Func<Task> suckAirOn,
-            Func<Task> suckAirOff) : base(name)
+        public Template(string name) : base(name)
         {
-            home_ = home;
-            moveToPointA_ = moveToPointA;
-            moveToPointB_ = moveToPointB;
-            cylinderUp_ = cylinderUp;
-            cylinderDown_ = cylinderDown;
-            suckAirOn_ = suckAirOn;
-            suckAirOff_ = suckAirOff;
         }
         #endregion
 
@@ -80,37 +56,19 @@ namespace example_1
             switch (seq)
             {
                 case "Start.":
+                    //Change "seq" value (switch expression) which determine the next case (switch section) to run in the next spin loop.
+                    seq = "Do work.";
 
-                    await home_();
-                    await moveToPointA_();
-                    seq = "Cycle.";
-
-                 
+                    //If change "macroSeq" instead of "seq" value. This will mark the next case  (switch section) as stepable when IsMacroStepping() is true 
+                    //macroSeq = "Do work.";
                     break;
 
-                case "Cycle.":
-                    if (stop)
-                    {
-                        completeSequence();
-                    }
-                    else
-                    {
-                        broadcastLog("Cycle completed=" + cycleCompleted_.ToString());
-                        if (cycleCompleted_ == cycle_)
-                        {
-                            completeSequence();
-                        }
-                        else
-                        {
-                            await IOOperation();
-                            await moveToPointB_();
-                            await IOOperation();
-                            await moveToPointA_();                         
-                        }
-                    }
+                case "Do work.":
+                    //Remember to set your return value.
+                    return_ = "Hellow World!";
 
-                    return_ += 1 ;
-
+                    //Call this method to complete sequence.
+                    completeSequence();
                     break;
 
                 default: //When unknown case is being called due to sequence programming bug.
@@ -118,22 +76,6 @@ namespace example_1
             }
 
             await Task.FromResult(0);
-        }
-
-        private async Task IOOperation()
-        {
-            await cylinderDown_();
-            await Task.Delay(500);
-            await suckAirOff_();
-            await Task.Delay(500);
-            await cylinderUp_();
-            await Task.Delay(500);
-            await cylinderDown_();
-            await Task.Delay(500);
-            await suckAirOn_();
-            await Task.Delay(500);
-            await cylinderUp_();
-            await Task.Delay(500);
         }
         #endregion
 
@@ -145,7 +87,7 @@ namespace example_1
         /// <param name="param1">The param1.</param>
         /// <param name="param2">The param2.</param>
         /// <returns></returns>
-        public async Task<string> ExecuteAsync(int cycle)
+        public async Task<string> ExecuteAsync(string param1, int param2)
         {
             try
             {
@@ -158,7 +100,8 @@ namespace example_1
 
                 //Validate parameters.
                 #region Param validation
-                cycle_ = cycle;
+                param1_ = param1;
+                param2_ = param2;
                 #endregion
 
                 #region Sequences
