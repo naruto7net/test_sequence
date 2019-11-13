@@ -16,8 +16,8 @@ namespace example_1
         Func<Task> moveToPointB_;
         Func<Task> cylinderUp_;
         Func<Task> cylinderDown_;
-        Func<Task> suckAirOn_;
-        Func<Task> suckAirOff_;
+        Func<Task> vacuumOn_;
+        Func<Task> vacuumOff_;
 
         int cycle_;
         int cycleCompleted_;
@@ -37,16 +37,16 @@ namespace example_1
             Func<Task> moveToPointB,
             Func<Task> cylinderUp,
             Func<Task> cylinderDown,
-            Func<Task> suckAirOn,
-            Func<Task> suckAirOff) : base(name)
+            Func<Task> vacuumOn,
+            Func<Task> vacuumOff) : base(name)
         {
             home_ = home;
             moveToPointA_ = moveToPointA;
             moveToPointB_ = moveToPointB;
             cylinderUp_ = cylinderUp;
             cylinderDown_ = cylinderDown;
-            suckAirOn_ = suckAirOn;
-            suckAirOff_ = suckAirOff;
+            vacuumOn_ = vacuumOn;
+            vacuumOff_ = vacuumOff;
         }
         #endregion
 
@@ -124,13 +124,13 @@ namespace example_1
         {
             await cylinderDown_();
             await Task.Delay(500);
-            await suckAirOff_();
+            await vacuumOff_();
             await Task.Delay(500);
             await cylinderUp_();
             await Task.Delay(500);
             await cylinderDown_();
             await Task.Delay(500);
-            await suckAirOn_();
+            await vacuumOn_();
             await Task.Delay(500);
             await cylinderUp_();
             await Task.Delay(500);
