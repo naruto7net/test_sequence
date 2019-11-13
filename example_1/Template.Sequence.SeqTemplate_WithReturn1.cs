@@ -22,9 +22,7 @@ namespace example_1
         int cycle_;
         int cycleCompleted_;
 
-        string param1_;
-        int param2_;
-        int return_;
+        string return_;
         #endregion
 
         #region Constructor
@@ -103,22 +101,15 @@ namespace example_1
                         }
                         else
                         {
-                            await cylinderDown_();
-                            await Task.Delay(500);
-                            await suckAirOn_();
-                            await cylinderUp_();
-
-                       
-                            await
-
+                            await IOOperation();
+                            await moveToPointB_();
+                            await IOOperation();
+                            await moveToPointA_();                         
                         }
                     }
 
-                    //Remember to set your return value.
                     return_ += 1 ;
 
-                    //Call this method to complete sequence.
-                    completeSequence();
                     break;
 
                 default: //When unknown case is being called due to sequence programming bug.
@@ -126,6 +117,22 @@ namespace example_1
             }
 
             await Task.FromResult(0);
+        }
+
+        private async Task IOOperation()
+        {
+            await cylinderDown_();
+            await Task.Delay(500);
+            await suckAirOff_();
+            await Task.Delay(500);
+            await cylinderUp_();
+            await Task.Delay(500);
+            await cylinderDown_();
+            await Task.Delay(500);
+            await suckAirOn_();
+            await Task.Delay(500);
+            await cylinderUp_();
+            await Task.Delay(500);
         }
         #endregion
 
@@ -137,7 +144,7 @@ namespace example_1
         /// <param name="param1">The param1.</param>
         /// <param name="param2">The param2.</param>
         /// <returns></returns>
-        public async Task<string> ExecuteAsync(string param1, int param2)
+        public async Task<string> ExecuteAsync(int cycle)
         {
             try
             {
@@ -150,8 +157,7 @@ namespace example_1
 
                 //Validate parameters.
                 #region Param validation
-                param1_ = param1;
-                param2_ = param2;
+                cycle_ = cycle;
                 #endregion
 
                 #region Sequences
