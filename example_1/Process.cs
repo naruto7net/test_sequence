@@ -6,52 +6,67 @@ using System.Threading.Tasks;
 
 namespace example_1
 {
-    class Process
+    class Process 
     {
         Template template;
 
+        
         public Process()
         {
-           
+
+        
+           // WaftechLibraries.Sequences.InitializeStatus initStatus = new WaftechLibraries.Sequences.InitializeStatus();
+            template.EnableInitializeCheck = true;
+            //template.InjectInitStateObject(initStatus);
+            //template.EnableInitializeCheck = true;
+
             template = new Template("Process",
                 () =>
                 {
                     Console.WriteLine("Home motor");
+                   
                     return Task.FromResult(0);
                 },
                 () =>
                 {
                     Console.WriteLine("Point A");
+                    //Console.WriteLine("STATUS : " + template.SequenceStatus.ToString());
                     return Task.FromResult(0);
                 },
                 () =>
                 {
                     Console.WriteLine("Point B");
+                    //Console.WriteLine("STATUS : " + template.SequenceStatus.ToString());
                     return Task.FromResult(0);
                 },
                 () =>
                 {
                     Console.WriteLine("Cylinder Up");
+                    //Console.WriteLine("STATUS : " + template.SequenceStatus.ToString());
                     return Task.FromResult(0);
                 },
                 () =>
                 {
                     Console.WriteLine("Cylinder Down");
+                    //Console.WriteLine("STATUS : " + template.SequenceStatus.ToString());
                     return Task.FromResult(0);
                 },
                 () =>
                 {
                     Console.WriteLine("Vacuum On");
+                    //Console.WriteLine("STATUS : " + template.SequenceStatus.ToString());
                     return Task.FromResult(0);
                 },
                 () =>
                 {
                     Console.WriteLine("Vacuum Off");
+                    //Console.WriteLine("STATUS : " + template.SequenceStatus.ToString());
                     return Task.FromResult(0);
                 });
 
             //WaftechLibraries.Log.DefaultLogger logger = new WaftechLibraries.Log.DefaultLogger();
             //seqUp.GetSetLogger = logger;
+           
 
             template.GetSetLogger.LogBroadcast += GetSetLogger_LogBroadcast;
             template.GetSetAlarmHandler.AlarmBroadcast += GetSetAlarmHandler_AlarmBroadcast;
