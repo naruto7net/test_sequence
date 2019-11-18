@@ -9,58 +9,76 @@ namespace example_1
     class Process 
     {
         Template template;
-
         
+
         public Process()
         {
 
-        
-           // WaftechLibraries.Sequences.InitializeStatus initStatus = new WaftechLibraries.Sequences.InitializeStatus();
-            template.EnableInitializeCheck = true;
+            #region TESTING
+
+            Galil.IGalil g = new Galil.Galil();
+            g.address = "192.168.1.2";
+
+            WaftechLibraries.Motion.GalilMotion.ICommandSimulator sim = new WaftechLibraries.Motion.GalilMotion.CommandSimulator(1);
+            Galil.IGalil g2 = new WaftechLibraries.Motion.GalilMotion.GalilSimulator(sim);
+
+            WaftechLibraries.IO.WaftechGalil.WafGalilIO ioCard = new WaftechLibraries.IO.WaftechGalil.WafGalilIO(g2);
+
+            WaftechLibraries.IO.DummyIOController io = new WaftechLibraries.IO.DummyIOController();
+
+
+            WaftechLibraries.Motion.AbstractAxisParameter param = new WaftechLibraries.Motion.AxisParameter();
+            WaftechLibraries.Motion.AxisAbstract a = new WaftechLibraries.Motion.GalilMotion.GalilAxis("X", g2, () => param, () => io.DigitalOutputSet(0, string.Empty), () => io.DigitalInputStatus(0, string.Empty), () => io.DigitalInputStatus(0, string.Empty));
+
+
+            // WaftechLibraries.Sequences.InitializeStatus initStatus = new WaftechLibraries.Sequences.InitializeStatus();
+            //template.EnableInitializeCheck = true;
             //template.InjectInitStateObject(initStatus);
             //template.EnableInitializeCheck = true;
 
+            #endregion
+
             template = new Template("Process",
-                () =>
+                async () =>
                 {
                     Console.WriteLine("Home motor");
-                   
-                    return Task.FromResult(0);
+                    await a.HomeAsync();
+                    //return Task.FromResult(0);
                 },
-                () =>
+                async () =>
                 {
                     Console.WriteLine("Point A");
-                    //Console.WriteLine("STATUS : " + template.SequenceStatus.ToString());
-                    return Task.FromResult(0);
+                    await a.MoveAbsoluteAsync(0, 50000, 100000, 100000, 0, 0,0, true, null, null);
+                    
                 },
-                () =>
+                async () =>
                 {
                     Console.WriteLine("Point B");
-                    //Console.WriteLine("STATUS : " + template.SequenceStatus.ToString());
-                    return Task.FromResult(0);
-                },
+                    await a.MoveAbsoluteAsync(108000, 50000, 100000, 100000, 0, 0, 0, true, null, null);
+                },   
                 () =>
                 {
                     Console.WriteLine("Cylinder Up");
-                    //Console.WriteLine("STATUS : " + template.SequenceStatus.ToString());
+                     ioCard.DigitalOutputClear(1, string.Empty);
                     return Task.FromResult(0);
+
                 },
                 () =>
                 {
                     Console.WriteLine("Cylinder Down");
-                    //Console.WriteLine("STATUS : " + template.SequenceStatus.ToString());
+                     ioCard.DigitalOutputSet(1, string.Empty);
                     return Task.FromResult(0);
                 },
-                () =>
+               () =>
                 {
                     Console.WriteLine("Vacuum On");
-                    //Console.WriteLine("STATUS : " + template.SequenceStatus.ToString());
+                     ioCard.DigitalOutputClear(2, string.Empty);
                     return Task.FromResult(0);
                 },
-                () =>
+                 () =>
                 {
                     Console.WriteLine("Vacuum Off");
-                    //Console.WriteLine("STATUS : " + template.SequenceStatus.ToString());
+                     ioCard.DigitalOutputSet(2, string.Empty);
                     return Task.FromResult(0);
                 });
 

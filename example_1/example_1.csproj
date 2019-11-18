@@ -45,6 +45,18 @@
     <Reference Include="WaftechLibraries">
       <HintPath>..\..\..\..\..\Desktop\waftech libraries\WaftechLibraries\WaftechLibraries\obj\Release\WaftechLibraries.dll</HintPath>
     </Reference>
+    <Reference Include="WaftechLibraries.IO.DummyIOController">
+      <HintPath>..\..\..\..\..\Desktop\waftech libraries\ConsoleApplication4\packages\WaftechLibraries.IO.DummyIOController.1.0.0\lib\net462\WaftechLibraries.IO.DummyIOController.dll</HintPath>
+    </Reference>
+    <Reference Include="WaftechLibraries.IO.WaftechGalil">
+      <HintPath>..\..\..\..\..\Desktop\waftech libraries\ConsoleApplication4\packages\WaftechLibraries.IO.WaftechGalil.1.0.8\lib\net462\WaftechLibraries.IO.WaftechGalil.dll</HintPath>
+    </Reference>
+    <Reference Include="WaftechLibraries.Motion">
+      <HintPath>..\..\..\..\..\Desktop\waftech libraries\ConsoleApplication4\packages\WaftechLibraries.Motion.4.7.0\lib\net462\WaftechLibraries.Motion.dll</HintPath>
+    </Reference>
+    <Reference Include="WaftechLibraries.Motion.GalilMotion">
+      <HintPath>..\..\..\..\..\Desktop\waftech libraries\ConsoleApplication4\packages\WaftechLibraries.Motion.GalilMotion.3.7.0\lib\net462\WaftechLibraries.Motion.GalilMotion.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Process.cs" />
@@ -54,6 +66,17 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <COMReference Include="Galil">
+      <Guid>{30A08063-D424-4206-9631-AE91CF80C678}</Guid>
+      <VersionMajor>1</VersionMajor>
+      <VersionMinor>5</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>tlbimp</WrapperTool>
+      <Isolated>False</Isolated>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </COMReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
