@@ -48,6 +48,9 @@
     <Reference Include="WaftechLibraries.IO.DummyIOController">
       <HintPath>..\..\..\..\..\Desktop\waftech libraries\ConsoleApplication4\packages\WaftechLibraries.IO.DummyIOController.1.0.0\lib\net462\WaftechLibraries.IO.DummyIOController.dll</HintPath>
     </Reference>
+    <Reference Include="WaftechLibraries.IO.IOInterfaces">
+      <HintPath>..\..\..\..\..\Desktop\waftech libraries\ConsoleApplication4\packages\WaftechLibraries.IO.IOInterfaces.1.1.0.1\lib\net462\WaftechLibraries.IO.IOInterfaces.dll</HintPath>
+    </Reference>
     <Reference Include="WaftechLibraries.IO.WaftechGalil">
       <HintPath>..\..\..\..\..\Desktop\waftech libraries\ConsoleApplication4\packages\WaftechLibraries.IO.WaftechGalil.1.0.8\lib\net462\WaftechLibraries.IO.WaftechGalil.dll</HintPath>
     </Reference>

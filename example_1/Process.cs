@@ -16,8 +16,8 @@ namespace example_1
 
             #region TESTING
 
-            Galil.IGalil g = new Galil.Galil();
-            g.address = "192.168.1.2";
+            //Galil.IGalil g = new Galil.Galil();
+            //g.address = "192.168.1.2";
 
             WaftechLibraries.Motion.GalilMotion.ICommandSimulator sim = new WaftechLibraries.Motion.GalilMotion.CommandSimulator(1);
             Galil.IGalil g2 = new WaftechLibraries.Motion.GalilMotion.GalilSimulator(sim);
@@ -28,6 +28,8 @@ namespace example_1
 
 
             WaftechLibraries.Motion.AbstractAxisParameter param = new WaftechLibraries.Motion.AxisParameter();
+            param.PulseToRealWorldUnitMultiplier = 1;
+            param.EncoderToReferencePositionMultiplier = 1;
             WaftechLibraries.Motion.AxisAbstract a = new WaftechLibraries.Motion.GalilMotion.GalilAxis("X", g2, () => param, () => io.DigitalOutputSet(0, string.Empty), () => io.DigitalInputStatus(0, string.Empty), () => io.DigitalInputStatus(0, string.Empty));
 
 
@@ -39,7 +41,7 @@ namespace example_1
             #endregion
 
             template = new Template("Process",
-                async () =>
+                 async () =>
                 {
                     Console.WriteLine("Home motor");
                     await a.HomeAsync();
@@ -48,13 +50,16 @@ namespace example_1
                 async () =>
                 {
                     Console.WriteLine("Point A");
-                    await a.MoveAbsoluteAsync(0, 50000, 100000, 100000, 0, 0,0, true, null, null);
-                    
+                    //await a.MoveAbsoluteAsync(0, 50000, 100000, 100000, 0, 0,0, true, null, null);
+                    await a.MoveAbsoluteAsync(0, 50000, 100000, 100000, 1, 1, 1, true, () => { }, () => { });
+                    //return Task.FromResult(0);
+
                 },
                 async () =>
                 {
                     Console.WriteLine("Point B");
-                    await a.MoveAbsoluteAsync(108000, 50000, 100000, 100000, 0, 0, 0, true, null, null);
+                    await a.MoveAbsoluteAsync(108000, 50000, 100000, 100000,1, 1, 1, true, null, null);
+                    //return Task.FromResult(0);
                 },   
                 () =>
                 {
